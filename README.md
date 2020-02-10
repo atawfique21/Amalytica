@@ -46,6 +46,8 @@ __Selenium Edge Cases__: Amazon's front-end differs slightly based on the time o
 
 ### Client (Front End)
 
+![Front End Wireframe](https://i.imgur.com/nPOobUg.png)
+
 - Landing page that describes Amalytica. 
 - Login/Register forms that allows access to Amalytica's data.
 - Have a form that allows you to search for a ASIN. 
@@ -57,6 +59,9 @@ __Selenium Edge Cases__: Amazon's front-end differs slightly based on the time o
   - Perform `create`, `update`, and `delete` actions **when logged in**.
 
 ### Server (Back End)
+
+![ERD Diagram](https://i.imgur.com/8MVNXXD.png)
+
 - Have a **RESTful JSON API**.
   - Build a **Ruby on Rails** server.
     - Build a database with at least 3 tables:
