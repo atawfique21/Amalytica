@@ -32,11 +32,10 @@ __Quick Data__: Amalytica runs requests as soon as you want it to. As soon as yo
 <br>
 
 ### Goals
-<br>
 __Deploy Selenium__: Amalytica uses Selenium which requires an enviroment to run inside of. Due to these constraints, being able to deply to a server with 24/7 access would be nice. 
-<br>
+
 __Data Visualization__: Use React data visualization tools to show charts and tables of data for each ASIN.
-<br>
+
 
 ### Challenges
 __Selenium Edge Cases__: Amazon's front-end differs slightly based on the time of running a query. Due to this, the crawlers can often run into situations where it is not sure what to do. I do, however, plan to combat this with rerunning the Selenium environment again and again until we get the data back. 
