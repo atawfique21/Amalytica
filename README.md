@@ -60,7 +60,7 @@ __Selenium Edge Cases__: Amazon's front-end differs slightly based on the time o
 
 ### Server (Back End)
 
-![ERD Diagram](https://i.imgur.com/8MVNXXD.png)
+![ERD Diagram](https://i.imgur.com/8MVNXXD.png){:height="50%" width="50%"}
 
 - Have a **RESTful JSON API**.
   - Build a **Ruby on Rails** server.
