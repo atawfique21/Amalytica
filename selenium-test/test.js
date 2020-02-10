@@ -9,7 +9,7 @@ const fs = require('fs');
 
   // var options = new firefox.Options().setBinary(firefox.Channel.NIGHTLY);
   var op = new firefox.Options()
-  op.addArguments("--headless");
+  // op.addArguments("--headless");
   op.addArguments("--window-size=1920,1080")
 
   const driver = new Builder()
@@ -20,6 +20,7 @@ const fs = require('fs');
   try {
     await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 20000, script: 5000 })
     await driver.get('https://www.amazon.com/dp/B0000DDVV9');
+    let buyboxSeller = await driver.findElement(By.id("merchant-info")).getText();
     await driver.wait(until.elementLocated(By.id('add-to-cart-button'))).click();
     await driver.sleep(2000)
     var existed = await driver.findElement(By.id("hlb-view-cart-announce")).then(function () {
@@ -42,18 +43,16 @@ const fs = require('fs');
     await driver.sleep(500)
     input.sendKeys(Key.RETURN)
     await driver.sleep(1000)
-    let thisSellerHas = await driver.findElement(By.xpath("(//span[@class='a-size-base'])[5]")).getText();
-    let price = await driver.findElement(By.xpath("(//span[contains(@class,'a-size-medium a-color-price')])[2]")).getText();
+    let boxboxhas = await driver.findElement(By.xpath("(//span[@class='a-size-base'])[5]")).getText();
+    let buyboxprice = await driver.findElement(By.xpath("(//span[contains(@class,'a-size-medium a-color-price')])[2]")).getText();
     console.log("----------------------------------")
-    console.log(`Sold by: ${storeName}`)
-    console.log(`Price: ${price}`)
-    console.log(`Condition: ${condition}`)
-    console.log(thisSellerHas)
+    console.log('Buy Box Data Below')
+    console.log(`Sold by: ${buyboxSeller}`)
+    console.log(`Price: ${buyboxprice}`)
+    console.log(boxboxhas)
     console.log("----------------------------------")
     await driver.findElement(By.xpath("(//input[@value='Delete'])[1]")).click();
     await driver.sleep(1000)
-
-
 
     await driver.get('https://www.amazon.com/dp/B0000DDVV9');
     await driver.sleep(2000)
@@ -66,7 +65,7 @@ const fs = require('fs');
     await driver.sleep(2000)
 
     if (offers.length > 3) {
-      offers = [1, 1, 1, 1]
+      offers = [1, 1, 1]
     } else {
       return
     }
