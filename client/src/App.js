@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Scraper from './test.js'
 import Axios from 'axios'
 
 class App extends React.Component {
