@@ -116,9 +116,10 @@ module.exports = function Scraper(ASIN) {
 
         let storeName = await driver.findElement(By.xpath(`(//a[@role='link'])[${i + 1}]`)).getText();
         try {
-          var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText();
+          await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`))
+          var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText()
         } catch (Exception) {
-          driver.sleep(99999)
+          driver.sleep(50000)
           await driver.get(`https://www.amazon.com/dp/${ASIN}`);
           await driver.sleep(4000)
           await driver.findElement(By.className("olp-text-box")).click();
