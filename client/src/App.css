@@ -1,7 +1,50 @@
 body {
-  background: black;
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, rgba(128, 128, 128, 0.5) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(128, 128, 128, 0.5) 1px, transparent 1px);
+  background-color: #e1e1ef;
+  color: whitesmoke;
+}
+
+.App > .Heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.App > .Heading > h1 {
+  background-color: #5867dd;
+  padding: 0.5%;
+  text-transform: capitalize;
+  letter-spacing: 2.5px;
+}
+
+.App > .Heading > h2 {
+  background-color: #5867dd;
+  padding: 0.1%;
+  text-transform: capitalize;
+  letter-spacing: 2.5px;
+  max-width: 40%;
+  text-align: center;
+}
+
+.browser-mockup {
+  border-top: 2em solid rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+  position: relative;
+  border-radius: 3px 3px 0 0;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  max-width: 50%;
+}
+
+.browser-mockup:before {
+  display: block;
+  position: absolute;
+  content: '';
+  top: -1.25em;
+  left: 1em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background-color: #f44;
+  box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
 }

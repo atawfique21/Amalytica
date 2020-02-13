@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Axios from 'axios'
+import amalytics2 from './assets/amalytics2.mp4'
 
 class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,22 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" >
+      <div className="App">
+        <div className="Heading">
+          <h1>The World Revolves Around Data</h1>
+          <div className="browser-mockup">
+            <video autoPlay loop muted width="100%" height="50%">
+              <source src={amalytics2} type="video/mp4" />
+              Your browser does not support the video tag.
+          </video>
+          </div>
+          <h2>Amalytica harness the power of modern tech to harvest data for Amazon Sellers.</h2>
+        </div>
+        <div className="Features">
+          <h3>Lightning Data</h3>
+          <h3>Data for any Asin</h3>
+          <h3>Server-sided Harvesting</h3>
+        </div>
         <form onSubmit={(e) => { this.handleSubmit(e) }}>
           <input
             type="text"
