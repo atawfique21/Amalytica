@@ -50,9 +50,13 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
+  handleLogout = () => {
+    this.setState({
+      currentUser: null
+    })
     console.log(this.state.currentUser)
-
+    localStorage.removeItem('authToken');
+    this.props.history.push('/');
   }
 
   handleChange = (e) => {
@@ -72,7 +76,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser} />
+        <Header currentUser={this.state.currentUser} handleLogout={this.handleLogout} />
         <Route exact path="/" render={() => (
           <Landing />
         )} />

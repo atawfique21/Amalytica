@@ -4,10 +4,14 @@ import { Link, withRouter } from 'react-router-dom'
 class Header extends React.Component {
   constructor(props) {
     super(props)
+  }
 
-    this.state = {
-      currentUser: this.props.currentUser
-    }
+  componentDidMount() {
+    console.log(this.props.currentUser)
+  }
+
+  componentDidUpdate() {
+    console.log(this.props.currentUser)
   }
 
   render() {
@@ -16,7 +20,7 @@ class Header extends React.Component {
         <div className="header-logo">
           <Link to="/">Amalytics</Link>
         </div>
-        {this.state.currentUser ?
+        {!this.props.currentUser ?
           <div className="header-buttons">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
@@ -24,10 +28,9 @@ class Header extends React.Component {
           :
           <div className="header-buttons">
             <Link to="/dashboard">Dashboard</Link>
-            <Link to="/logout">Logout</Link>
+            <Link onClick={this.props.handleLogout}>Logout</Link>
           </div>
         }
-
       </header>
     )
   }
