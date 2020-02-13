@@ -233,3 +233,19 @@ form > h2 {
   margin-bottom: -1.5vw;
   cursor: pointer;
 }
+
+
+.dashboard {
+  margin-top: 6%;
+}
+
+.unauthorized > a {
+  color: #5867dd;
+  /* text-decoration: none; */
+}
+
+.unauthorized {
+  margin-top: 50%;
+  color: #f44;
+  font-size: 24px;
+}

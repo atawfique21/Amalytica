@@ -62,16 +62,19 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header currentUser={this.state.currentUser} handleLogout={this.handleLogout} />
+
         <Route exact path="/" render={() => (
           <Landing />
         )} />
+
         <Route path="/login" render={() => (
           <Login handleLogin={this.handleLogin} errorText={this.state.errorText} currentUser={this.state.currentUser} />
         )} />
 
         <Route path="/dashboard" render={() => (
-          <Dashboard />
+          <Dashboard currentUser={this.state.currentUser} />
         )} />
+
       </div >
     );
   }
