@@ -2,6 +2,10 @@ import React from 'react';
 import './App.css';
 import Axios from 'axios'
 import amalytics2 from './assets/amalytics2.mp4'
+import cloud from './assets/cloud.png'
+import fast from './assets/fast.png'
+import select from './assets/select.png'
+
 
 class App extends React.Component {
   constructor(props) {
@@ -40,9 +44,18 @@ class App extends React.Component {
           <h2>Amalytica harness the power of modern tech to harvest data for Amazon Sellers.</h2>
         </div>
         <div className="Features">
-          <h3>Lightning Data</h3>
-          <h3>Data for any Asin</h3>
-          <h3>Server-sided Harvesting</h3>
+          <div className="single-feature">
+            <img src={fast}></img>
+            <h3>Lightning Data</h3>
+          </div>
+          <div className="single-feature">
+            <img src={select}></img>
+            <h3>Data for any Asin</h3>
+          </div>
+          <div className="single-feature">
+            <img src={cloud}></img>
+            <h3>Server-sided Harvesting</h3>
+          </div>
         </div>
         <form onSubmit={(e) => { this.handleSubmit(e) }}>
           <input
