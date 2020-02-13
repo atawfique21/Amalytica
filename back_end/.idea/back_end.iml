@@ -57,6 +57,7 @@
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.10.8, rbenv: 2.5.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="puma (v4.3.1, rbenv: 2.5.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack (v2.2.2, rbenv: 2.5.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack-cors (v1.1.1, rbenv: 2.5.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rack-test (v1.1.0, rbenv: 2.5.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rails (v6.0.2.1, rbenv: 2.5.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rails-dom-testing (v2.0.3, rbenv: 2.5.1) [gem]" level="application" />
