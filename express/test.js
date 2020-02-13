@@ -1,4 +1,4 @@
-module.exports = function Scraper(ASIN) {
+module.exports = async function Scraper(ASIN) {
   const { Builder, By, Key, until } = require('selenium-webdriver');
   const firefox = require('selenium-webdriver/firefox');
   const fs = require('fs');
@@ -29,6 +29,8 @@ module.exports = function Scraper(ASIN) {
       console.log(`Title: ${title}`)
       console.log(`Image: ${img}`)
       console.log("----------------------------------")
+      console.log(title)
+      return { title: title, img: img }
       let buyboxSeller = await driver.findElement(By.id("merchant-info")).getText();
       await driver.wait(until.elementLocated(By.id('add-to-cart-button'))).click();
       await driver.sleep(2000)

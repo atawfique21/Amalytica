@@ -1,6 +1,6 @@
 const express = require('express');
 const PORT = process.env.PORT || 3001;
-const Scraper = require('./test.js')
+const Scraper = require('./test1.js')
 
 const cors = require('cors')
 const logger = require('morgan');
@@ -13,8 +13,9 @@ console.log(typeof Scraper)
 
 // routes
 
-app.get('/:id', (req, res) => {
-  Scraper(req.params.id)
+app.get('/:id', async (req, res) => {
+  const rel = await Scraper(req.params.id)
+  res.send({ rel })
 })
 
 // error handler

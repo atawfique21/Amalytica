@@ -1,5 +1,6 @@
 import React from 'react'
 import Axios from 'axios'
+import { getProductData } from '../services/seleniumHelper'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -17,9 +18,9 @@ class Dashboard extends React.Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
-    Axios.get(`http://localhost:3001/${this.state.ASIN}`)
+    await getProductData(this.state.ASIN)
   }
 
   render() {
