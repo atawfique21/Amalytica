@@ -4,6 +4,7 @@ import Axios from 'axios'
 import Header from './components/header'
 import Landing from './components/landing'
 import Login from './components/login'
+import Dashboard from './components/dashboard'
 import { Route, withRouter } from 'react-router-dom'
 import { loginUser } from './services/apiHelper'
 
@@ -13,7 +14,6 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      ASIN: "",
       errorText: "",
       currentUser: null
     }
@@ -59,20 +59,6 @@ class App extends React.Component {
     this.props.history.push('/');
   }
 
-  handleChange = (e) => {
-    const { value } = e.target;
-    this.setState({
-      ASIN: value
-    })
-    console.log(this.state.ASIN)
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    console.log('hi')
-    Axios.get(`http://localhost:3001/${this.state.ASIN}`)
-  }
-
   render() {
     return (
       <div className="App">
@@ -85,17 +71,7 @@ class App extends React.Component {
         )} />
 
         <Route path="/dashboard" render={() => (
-          <form onSubmit={(e) => { this.handleSubmit(e) }}>
-            <input
-              type="text"
-              onChange={(e) => { this.handleChange(e) }}
-              onSubmit={(e) => { this.handleSubmit(e) }}
-            />
-            <input
-              type="submit"
-              onSubmit={(e) => { this.handleSubmit(e) }}
-            />
-          </form>
+          <Dashboard />
         )} />
       </div >
     );
