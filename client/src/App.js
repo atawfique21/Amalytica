@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Axios from 'axios'
 import Header from './components/header'
 import Landing from './components/landing'
 import Login from './components/login'
