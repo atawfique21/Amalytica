@@ -6,7 +6,7 @@ import Login from './components/login'
 import Register from './components/register'
 import Dashboard from './components/dashboard'
 import { Route, withRouter } from 'react-router-dom'
-import { loginUser, registerUser } from './services/apiHelper'
+import { loginUser, registerUser, verifyUser } from './services/apiHelper'
 
 
 class App extends React.Component {
@@ -67,12 +67,25 @@ class App extends React.Component {
   }
 
   handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
+    localStorage.removeItem('name');
     this.setState({
       currentUser: null
     })
-    console.log(this.state.currentUser)
-    localStorage.removeItem('authToken');
     this.props.history.push('/');
+  }
+
+  componentDidMount() {
+    verifyUser();
+    if (localStorage.getItem('authToken')) {
+      const name = localStorage.getItem('name');
+      const username = localStorage.getItem('username');
+      const user = { name, username };
+      user && this.setState({
+        currentUser: user
+      })
+    }
   }
 
   render() {
