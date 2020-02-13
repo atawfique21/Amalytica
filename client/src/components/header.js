@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, withRouter } from 'react-router-dom'
 
 class Header extends React.Component {
   constructor(props) {
@@ -13,16 +14,16 @@ class Header extends React.Component {
     return (
       <header>
         <div className="header-logo">
-          <h1>Amalytics</h1>
+          <Link to="/">Amalytics</Link>
         </div>
 
         <div className="header-buttons">
-          <h4>Login</h4>
-          <h4>Register</h4>
+          <Link to="/login">Login</Link>
+          <Link to="/register">Register</Link>
         </div>
       </header>
     )
   }
 }
 
-export default Header;
+export default withRouter(Header);
