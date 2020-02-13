@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Axios from 'axios'
+import Header from './components/header'
 import amalytics2 from './assets/amalytics2.mp4'
 import cloud from './assets/cloud.png'
 import fast from './assets/fast.png'
@@ -33,6 +34,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Header />
         <div className="Heading">
           <h1>The World Revolves Around Data</h1>
           <div className="browser-mockup">
