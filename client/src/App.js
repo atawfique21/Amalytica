@@ -47,14 +47,17 @@ class App extends React.Component {
           <div className="single-feature">
             <img src={fast}></img>
             <h3>Lightning Data</h3>
+            <h4>The average ASIN result is under one minute.</h4>
           </div>
           <div className="single-feature">
             <img src={select}></img>
             <h3>Data for any Asin</h3>
+            <h4>Amalytica supports all product categories and ASINs.</h4>
           </div>
           <div className="single-feature">
             <img src={cloud}></img>
             <h3>Server-sided Harvesting</h3>
+            <h4>Your computer resources are never used to harvest data for Amalytica.</h4>
           </div>
         </div>
         <form onSubmit={(e) => { this.handleSubmit(e) }}>
