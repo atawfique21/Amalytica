@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  asin: MyString
+  image: MyString
+  title: MyString
+  sellers: 1
+  stars: 1
+  ratings: 1
+
+two:
+  user: two
+  asin: MyString
+  image: MyString
+  title: MyString
+  sellers: 1
+  stars: 1
+  ratings: 1
