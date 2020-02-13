@@ -236,10 +236,10 @@ form > h2 {
 
 
 .dashboard {
-  margin-top: 6%;
+  margin-top: 100%;
 }
 
-.unauthorized > a {
+.unauthorized > h2 > a {
   color: #5867dd;
   /* text-decoration: none; */
 }
