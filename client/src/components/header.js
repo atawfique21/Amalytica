@@ -6,7 +6,7 @@ class Header extends React.Component {
     super(props)
 
     this.state = {
-
+      currentUser: this.props.currentUser
     }
   }
 
@@ -16,11 +16,18 @@ class Header extends React.Component {
         <div className="header-logo">
           <Link to="/">Amalytics</Link>
         </div>
+        {this.state.currentUser ?
+          <div className="header-buttons">
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </div>
+          :
+          <div className="header-buttons">
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/logout">Logout</Link>
+          </div>
+        }
 
-        <div className="header-buttons">
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
-        </div>
       </header>
     )
   }
