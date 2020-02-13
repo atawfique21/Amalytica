@@ -6,14 +6,6 @@ class Header extends React.Component {
     super(props)
   }
 
-  componentDidMount() {
-    console.log(this.props.currentUser)
-  }
-
-  componentDidUpdate() {
-    console.log(this.props.currentUser)
-  }
-
   render() {
     return (
       <header>

@@ -3,9 +3,10 @@ import './App.css';
 import Header from './components/header'
 import Landing from './components/landing'
 import Login from './components/login'
+import Register from './components/register'
 import Dashboard from './components/dashboard'
 import { Route, withRouter } from 'react-router-dom'
-import { loginUser } from './services/apiHelper'
+import { loginUser, registerUser } from './services/apiHelper'
 
 
 class App extends React.Component {
@@ -49,6 +50,22 @@ class App extends React.Component {
     }
   }
 
+  handleRegister = async (e, registerData) => {
+    e.preventDefault();
+    if (!registerData.name || !registerData.username || !registerData.password) {
+      this.setState({
+        errorText: "Please check blank fields!"
+      })
+    } else {
+      const currentUser = await registerUser(registerData);
+      this.setState({
+        currentUser,
+        errorText: ''
+      })
+      this.props.history.push('/dashboard');
+    }
+  }
+
   handleLogout = () => {
     this.setState({
       currentUser: null
@@ -71,9 +88,15 @@ class App extends React.Component {
           <Login handleLogin={this.handleLogin} errorText={this.state.errorText} currentUser={this.state.currentUser} />
         )} />
 
+        <Route path="/register" render={() => (
+          <Register handleRegister={this.handleRegister} errorText={this.state.errorText} currentUser={this.state.currentUser} />
+        )} />
+
         <Route path="/dashboard" render={() => (
           <Dashboard currentUser={this.state.currentUser} />
         )} />
+
+
 
       </div >
     );

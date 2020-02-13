@@ -15,12 +15,10 @@ class Dashboard extends React.Component {
     this.setState({
       ASIN: value
     })
-    console.log(this.state.ASIN)
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log('hi')
     Axios.get(`http://localhost:3001/${this.state.ASIN}`)
   }
 
@@ -33,6 +31,7 @@ class Dashboard extends React.Component {
               <h2>Please <a href="/login">login</a> to see the dashboard.</h2>
             </div> :
             < div className="dashboard" >
+              <h1>Hello, {this.props.currentUser.name}</h1>
               <form onSubmit={(e) => { this.handleSubmit(e) }}>
                 <input
                   type="text"
