@@ -3,6 +3,7 @@ import './App.css';
 import Axios from 'axios'
 import Header from './components/header'
 import Landing from './components/landing'
+import Login from './components/login'
 import { Route, withRouter } from 'react-router-dom'
 
 
@@ -35,6 +36,9 @@ class App extends React.Component {
         <Header />
         <Route exact path="/" render={() => (
           <Landing />
+        )} />
+        <Route path="/login" render={() => (
+          <Login />
         )} />
         <form onSubmit={(e) => { this.handleSubmit(e) }}>
           <input
