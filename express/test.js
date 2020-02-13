@@ -10,7 +10,7 @@ module.exports = function Scraper(ASIN) {
 
     // var options = new firefox.Options().setBinary(firefox.Channel.NIGHTLY);
     var op = new firefox.Options()
-    // op.addArguments("--headless");
+    op.addArguments("--headless");
     op.addArguments("--window-size=1920,1080")
 
     const driver = new Builder()
@@ -21,6 +21,14 @@ module.exports = function Scraper(ASIN) {
     try {
       await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 20000, script: 5000 })
       await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+      let title = await driver.findElement(By.id("productTitle")).getText()
+      await driver.sleep(2000)
+      let img = await driver.findElement(By.xpath(`//*[@id="landingImage"]`)).getAttribute("src");
+      console.log("----------------------------------")
+      console.log('Product Info')
+      console.log(`Title: ${title}`)
+      console.log(`Image: ${img}`)
+      console.log("----------------------------------")
       let buyboxSeller = await driver.findElement(By.id("merchant-info")).getText();
       await driver.wait(until.elementLocated(By.id('add-to-cart-button'))).click();
       await driver.sleep(2000)
