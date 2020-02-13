@@ -6,7 +6,7 @@ import Login from './components/login'
 import Register from './components/register'
 import Dashboard from './components/dashboard'
 import { Route, withRouter } from 'react-router-dom'
-import { loginUser, registerUser, verifyUser } from './services/apiHelper'
+import { loginUser, registerUser, verifyUser, getProducts } from './services/apiHelper'
 
 
 class App extends React.Component {
@@ -76,14 +76,19 @@ class App extends React.Component {
     this.props.history.push('/');
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     verifyUser();
     if (localStorage.getItem('authToken')) {
       const name = localStorage.getItem('name');
       const username = localStorage.getItem('username');
-      const user = { name, username };
+      const id = localStorage.getItem('id');
+      const user = { name, username, id };
       user && this.setState({
         currentUser: user
+      })
+      const currentProducts = await getProducts(id);
+      this.setState({
+        currentProducts
       })
     }
   }

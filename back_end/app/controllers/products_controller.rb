@@ -37,6 +37,7 @@ class ProductsController < ApplicationController
   end
 
   def set_user
+    puts(params[:user_id])
     @user = User.find_by_id(params[:user_id])
   end
 end

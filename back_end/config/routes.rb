@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   post 'auth/login', to: 'authentication#authenticate'
   post 'signup', to: 'users#create'
   post 'products', to: 'products#create'
-  get 'products', to: 'products#index'
+  get 'products/user/:user_id', to: 'products#index'
   get 'products/:id', to: 'products#show'
 end
