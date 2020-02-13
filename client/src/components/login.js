@@ -22,7 +22,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="auth">
-        <form onSubmit={(e) => this.props.handleLogin(e, { username: this.state.username, password: this.state.password })}>
+        <form className="login-form" onSubmit={(e) => this.props.handleLogin(e, { username: this.state.username, password: this.state.password })}>
           <h2>Welcome Back</h2>
           {this.props.errorText && <p className="error-text">{this.props.errorText}</p>}
           <span className="field">
