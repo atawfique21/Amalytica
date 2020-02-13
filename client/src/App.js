@@ -41,17 +41,17 @@ class App extends React.Component {
               Your browser does not support the video tag.
           </video>
           </div>
-          <h2>Amalytica harness the power of modern tech to harvest data for Amazon Sellers.</h2>
+          <h2>And Amalytica harness the power of modern tech to harvest data for Amazon Sellers.</h2>
         </div>
         <div className="Features">
           <div className="single-feature">
             <img src={fast}></img>
-            <h3>Lightning Data</h3>
-            <h4>The average ASIN result is under one minute.</h4>
+            <h3>Lightning Fast Analytics</h3>
+            <h4>The average analytics for an ASIN is delivered under one minute.</h4>
           </div>
           <div className="single-feature">
             <img src={select}></img>
-            <h3>Data for any Asin</h3>
+            <h3>All ASINs Supported</h3>
             <h4>Amalytica supports all product categories and ASINs.</h4>
           </div>
           <div className="single-feature">
