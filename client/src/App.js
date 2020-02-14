@@ -93,7 +93,6 @@ class App extends React.Component {
         currentProducts
       })
     }
-    console.log(this.state.currentProducts)
   }
 
   render() {

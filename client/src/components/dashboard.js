@@ -1,5 +1,6 @@
 import React from 'react'
 import { getProductData } from '../services/seleniumHelper'
+import Spinner from '../assets/Spinner.gif'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -7,7 +8,8 @@ class Dashboard extends React.Component {
 
     this.state = {
       ASIN: null,
-      currentProducts: []
+      currentProducts: [],
+      dataLoading: false
     }
   }
 
@@ -20,9 +22,13 @@ class Dashboard extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
+    this.setState({
+      dataLoading: true
+    })
     const req = await getProductData(this.state.ASIN, this.props.currentUser.id)
     this.setState({
-      currentProducts: [...this.state.currentProducts, req]
+      currentProducts: [req, ...this.state.currentProducts],
+      dataLoading: false
     })
   }
 
@@ -47,28 +53,40 @@ class Dashboard extends React.Component {
                   onSubmit={(e) => { this.handleSubmit(e) }}
                 />
               </form>
-              {this.props.currentProducts &&
-                <div className="data-wrapper">
-                  {this.props.currentProducts.map((product, key) =>
+              <div className="data-wrapper">
+                {
+                  this.state.dataLoading &&
+                  <div className="single-data loading-wrapper">
+                    {/* <img src={Spinner}></img> */}
+                    <div className="loader">
+                      <div className="line line1"></div>
+                      <div className="line line2"></div>
+                      <div className="line line3"></div>
+                      <div className="line line4"></div>
+                      <div className="line line5"></div>
+                    </div>
+                    <h3>Getting data for ASIN:</h3>
+                    <h4>{this.state.ASIN}</h4>
+                  </div>
+                }
+                {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
+                  <div className="single-data" key={key}>
+                    <h1>{product.title}</h1>
+                    <h2>{product.asin}</h2>
+                    <img src={product.image}></img>
+                  </div>
+                )}
+                {this.props.currentProducts &&
+                  this.props.currentProducts.map((product, key) =>
                     <div className="single-data" key={key}>
                       <h1>{product.title}</h1>
                       <h2>{product.asin}</h2>
-                      <div className="browser-mockup">
-                        <h3>{product.image}</h3>
-                      </div>
+                      <img src={product.image}></img>
                     </div>
-                  )}
-                  {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
-                    <div className="single-data" key={key}>
-                      <h1>{product.title}</h1>
-                      <h2>{product.asin}</h2>
-                      <div className="browser-mockup">
-                        <h3>{product.image}</h3>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              }
+                  )
+                }
+                }
+              </div>
             </div >
         }
       </div>
