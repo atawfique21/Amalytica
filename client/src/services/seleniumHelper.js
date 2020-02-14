@@ -4,15 +4,16 @@ const api = Axios.create({
   baseURL: "http://localhost:3001"
 })
 
-export const getProductData = async (ASIN, user_id) => {
+export const getVitals = async (ASIN, user_id) => {
   user_id = parseInt(user_id)
   const resp = await api.get(`/${ASIN}`);
   // console.log(resp.data.rel)
   let productData = {
     asin: ASIN,
-    image: resp.data.rel.img,
-    title: resp.data.rel.title,
-    user_id: user_id
+    image: resp.data.img,
+    title: resp.data.title,
+    user_id: user_id,
+    price: resp.data.price
   }
   // productData = JSON.stringify(productData)
 

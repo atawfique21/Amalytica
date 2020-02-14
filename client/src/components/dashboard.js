@@ -1,6 +1,5 @@
 import React from 'react'
-import { getProductData } from '../services/seleniumHelper'
-import Spinner from '../assets/Spinner.gif'
+import { getVitals } from '../services/seleniumHelper'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class Dashboard extends React.Component {
     this.setState({
       dataLoading: true
     })
-    const req = await getProductData(this.state.ASIN, this.props.currentUser.id)
+    const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
     this.setState({
       currentProducts: [req, ...this.state.currentProducts],
       dataLoading: false
@@ -74,6 +73,7 @@ class Dashboard extends React.Component {
                     <h1>{product.title}</h1>
                     <h2>{product.asin}</h2>
                     <img src={product.image}></img>
+                    <h2>{product.price}</h2>
                   </div>
                 )}
                 {this.props.currentProducts &&
@@ -82,6 +82,7 @@ class Dashboard extends React.Component {
                       <h1>{product.title}</h1>
                       <h2>{product.asin}</h2>
                       <img src={product.image}></img>
+                      <h2>{product.price}</h2>
                     </div>
                   )
                 }
