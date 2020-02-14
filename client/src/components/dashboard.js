@@ -1,5 +1,4 @@
 import React from 'react'
-import Axios from 'axios'
 import { getProductData } from '../services/seleniumHelper'
 
 class Dashboard extends React.Component {
@@ -7,7 +6,8 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
-      ASIN: null
+      ASIN: null,
+      currentProducts: []
     }
   }
 
@@ -20,7 +20,10 @@ class Dashboard extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    await getProductData(this.state.ASIN)
+    const req = await getProductData(this.state.ASIN, this.props.currentUser.id)
+    this.setState({
+      currentProducts: [...this.state.currentProducts, req]
+    })
   }
 
   render() {
@@ -44,8 +47,29 @@ class Dashboard extends React.Component {
                   onSubmit={(e) => { this.handleSubmit(e) }}
                 />
               </form>
+              {this.props.currentProducts &&
+                <div className="data-wrapper">
+                  {this.props.currentProducts.map((product, key) =>
+                    <div className="single-data" key={key}>
+                      <h1>{product.title}</h1>
+                      <h2>{product.asin}</h2>
+                      <div className="browser-mockup">
+                        <h3>{product.image}</h3>
+                      </div>
+                    </div>
+                  )}
+                  {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
+                    <div className="single-data" key={key}>
+                      <h1>{product.title}</h1>
+                      <h2>{product.asin}</h2>
+                      <div className="browser-mockup">
+                        <h3>{product.image}</h3>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              }
             </div >
-
         }
       </div>
     )

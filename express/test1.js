@@ -61,104 +61,105 @@ async function productInfo(ASIN) {
     console.log(buyBoxQty)
     console.log("----------------------------------")
     offersArr.push({ seller: buyboxSeller, price: buyboxprice, condition: "new", qty: buyBoxQty })
-    await driver.findElement(By.xpath("(//input[@value='Delete'])[1]")).click();
-    await driver.sleep(1000)
 
-    await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-    await driver.sleep(1000)
+    // await driver.findElement(By.xpath("(//input[@value='Delete'])[1]")).click();
+    // await driver.sleep(1000)
 
-    await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
-    await driver.sleep(1000)
+    // await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    // await driver.sleep(1000)
 
-    try {
-      await driver.findElement(By.id("aod-sort-details-string"))
-    } catch (Exception) {
-      await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-      await driver.sleep(3000)
-      await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
-      await driver.sleep(1000)
+    // await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+    // await driver.sleep(1000)
 
-      try {
-        await driver.findElement(By.id("aod-sort-details-string"))
-      } catch (Exception) {
-        await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-        await driver.sleep(3000)
-        await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
-        await driver.sleep(1000)
-      }
-    }
-    let offers = await driver.findElements(By.xpath("//div[contains(@class, 'aod-offer')]"))
-    await driver.findElement(By.xpath("(//div[@id='aod-background'])[1]")).click();
-    await driver.sleep(1000)
+    // try {
+    //   await driver.findElement(By.id("aod-sort-details-string"))
+    // } catch (Exception) {
+    //   await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //   await driver.sleep(3000)
+    //   await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+    //   await driver.sleep(1000)
 
-    if (offers.length > 3) {
-      offers = [1, 1, 1]
-    }
-    for (let i = 1; i < offers.length; i++) {
-      await driver.sleep(3000)
-      await driver.findElement(By.className("olp-text-box")).click();
-      await driver.sleep(3000)
-      try {
-        await driver.findElement(By.id("aod-sort-details-string"))
-      } catch (Exception) {
-        await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-        await driver.sleep(3000)
-        await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
-        await driver.sleep(1000)
+    //   try {
+    //     await driver.findElement(By.id("aod-sort-details-string"))
+    //   } catch (Exception) {
+    //     await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //     await driver.sleep(3000)
+    //     await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+    //     await driver.sleep(1000)
+    //   }
+    // }
+    // let offers = await driver.findElements(By.xpath("//div[contains(@class, 'aod-offer')]"))
+    // await driver.findElement(By.xpath("(//div[@id='aod-background'])[1]")).click();
+    // await driver.sleep(1000)
 
-        try {
-          await driver.findElement(By.id("aod-sort-details-string"))
-        } catch (Exception) {
-          await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-          await driver.sleep(3000)
-          await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
-          await driver.sleep(1000)
-        }
-      }
+    // if (offers.length > 3) {
+    //   offers = [1, 1, 1]
+    // }
+    // for (let i = 1; i < offers.length; i++) {
+    //   await driver.sleep(3000)
+    //   await driver.findElement(By.className("olp-text-box")).click();
+    //   await driver.sleep(3000)
+    //   try {
+    //     await driver.findElement(By.id("aod-sort-details-string"))
+    //   } catch (Exception) {
+    //     await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //     await driver.sleep(3000)
+    //     await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+    //     await driver.sleep(1000)
 
-      let storeName = await driver.findElement(By.xpath(`(//a[@role='link'])[${i + 1}]`)).getText();
-      try {
-        await driver.sleep(3000)
-        await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`))
-        var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText()
-      } catch (Exception) {
-        await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-        await driver.sleep(3000)
-        await driver.findElement(By.className("olp-text-box")).click();
-        driver.sleep(3000)
-        var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText();
-      }
-      await driver.findElement(By.xpath(`(//input[@name='submit.addToCart'])[${i + 1}]`)).click();
-      driver.wait(until.elementLocated(By.id('hlb-view-cart-announce'))).click();
-      await driver.sleep(3000)
-      await driver.wait(until.elementLocated(By.className('a-dropdown-container'))).click();
-      driver.wait(until.elementLocated(By.id("dropdown1_10"))).click();
-      let input = await driver.findElement(By.xpath("//input[contains(@class,'a-input-text a-width-small')]"))
-      await driver.sleep(500)
-      input.sendKeys(Key.BACK_SPACE)
-      await driver.sleep(500)
-      input.sendKeys('999')
-      await driver.sleep(500)
-      input.sendKeys(Key.RETURN)
-      await driver.sleep(1000)
-      let thisSellerHas = await driver.findElement(By.xpath("(//span[@class='a-size-base'])[5]")).getText();
-      await driver.sleep(500)
-      let price = await driver.findElement(By.xpath("(//span[contains(@class,'a-size-medium a-color-price')])[2]")).getText();
-      console.log("----------------------------------")
-      console.log(`Sold by: ${storeName}`)
-      console.log(`Price: ${price}`)
-      console.log(`Condition: ${condition}`)
-      console.log(thisSellerHas)
-      console.log("----------------------------------")
-      offersArr.push({ seller: storeName, price: price, condition: condition, qty: thisSellerHas })
-      await driver.findElement(By.xpath("(//input[@value='Delete'])[1]")).click();
-      await driver.sleep(2000)
-      if (i === 2) {
-        break;
-      } else {
-        await driver.get(`https://www.amazon.com/dp/${ASIN}`);
-      }
-    }
+    //     try {
+    //       await driver.findElement(By.id("aod-sort-details-string"))
+    //     } catch (Exception) {
+    //       await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //       await driver.sleep(3000)
+    //       await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+    //       await driver.sleep(1000)
+    //     }
+    //   }
+
+    //   let storeName = await driver.findElement(By.xpath(`(//a[@role='link'])[${i + 1}]`)).getText();
+    //   try {
+    //     await driver.sleep(3000)
+    //     await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`))
+    //     var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText()
+    //   } catch (Exception) {
+    //     await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //     await driver.sleep(3000)
+    //     await driver.findElement(By.className("olp-text-box")).click();
+    //     driver.sleep(3000)
+    //     var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${i + 1}]`)).getText();
+    //   }
+    //   await driver.findElement(By.xpath(`(//input[@name='submit.addToCart'])[${i + 1}]`)).click();
+    //   driver.wait(until.elementLocated(By.id('hlb-view-cart-announce'))).click();
+    //   await driver.sleep(3000)
+    //   await driver.wait(until.elementLocated(By.className('a-dropdown-container'))).click();
+    //   driver.wait(until.elementLocated(By.id("dropdown1_10"))).click();
+    //   let input = await driver.findElement(By.xpath("//input[contains(@class,'a-input-text a-width-small')]"))
+    //   await driver.sleep(500)
+    //   input.sendKeys(Key.BACK_SPACE)
+    //   await driver.sleep(500)
+    //   input.sendKeys('999')
+    //   await driver.sleep(500)
+    //   input.sendKeys(Key.RETURN)
+    //   await driver.sleep(1000)
+    //   let thisSellerHas = await driver.findElement(By.xpath("(//span[@class='a-size-base'])[5]")).getText();
+    //   await driver.sleep(500)
+    //   let price = await driver.findElement(By.xpath("(//span[contains(@class,'a-size-medium a-color-price')])[2]")).getText();
+    //   console.log("----------------------------------")
+    //   console.log(`Sold by: ${storeName}`)
+    //   console.log(`Price: ${price}`)
+    //   console.log(`Condition: ${condition}`)
+    //   console.log(thisSellerHas)
+    //   console.log("----------------------------------")
+    //   offersArr.push({ seller: storeName, price: price, condition: condition, qty: thisSellerHas })
+    //   await driver.findElement(By.xpath("(//input[@value='Delete'])[1]")).click();
+    //   await driver.sleep(2000)
+    //   if (i === 2) {
+    //     break;
+    //   } else {
+    //     await driver.get(`https://www.amazon.com/dp/${ASIN}`);
+    //   }
+    // }
 
     return { title, img, offersArr }
   } finally {

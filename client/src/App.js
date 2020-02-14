@@ -15,7 +15,8 @@ class App extends React.Component {
 
     this.state = {
       errorText: "",
-      currentUser: null
+      currentUser: null,
+      currentProducts: null
     }
   }
 
@@ -79,10 +80,11 @@ class App extends React.Component {
   componentDidMount = async () => {
     verifyUser();
     if (localStorage.getItem('authToken')) {
+      const authToken = localStorage.getItem('authToken')
       const name = localStorage.getItem('name');
       const username = localStorage.getItem('username');
       const id = localStorage.getItem('id');
-      const user = { name, username, id };
+      const user = { authToken, name, username, id };
       user && this.setState({
         currentUser: user
       })
@@ -91,6 +93,7 @@ class App extends React.Component {
         currentProducts
       })
     }
+    console.log(this.state.currentProducts)
   }
 
   render() {
@@ -111,7 +114,7 @@ class App extends React.Component {
         )} />
 
         <Route path="/dashboard" render={() => (
-          <Dashboard currentUser={this.state.currentUser} />
+          <Dashboard currentUser={this.state.currentUser} currentProducts={this.state.currentProducts} />
         )} />
 
 

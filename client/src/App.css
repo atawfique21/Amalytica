@@ -236,7 +236,7 @@ form > h2 {
 
 
 .dashboard {
-  margin-top: 100%;
+  margin-top: 15%;
 }
 
 .unauthorized > h2 > a {
@@ -248,4 +248,50 @@ form > h2 {
   margin-top: 50%;
   color: #f44;
   font-size: 24px;
+}
+
+.data-wrapper {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.single-data {
+  background-color: whitesmoke;
+  color: #5867dd;
+  border-radius: 2%;
+  padding: 2%;
+  max-width: 28%;
+  text-align: center;
+  box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+  margin: 0.5%;
+}
+
+.single-data > h1 {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.single-data > h2 {
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 0;
+  letter-spacing: 1px;
+  color: black;
+}
+
+.single-data > .browser-mockup { 
+  max-width: 100%;
+  box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.2);
+
+}
+
+.single-data > .browser-mockup > h3 {
+  max-width: 100%;
+  overflow: hidden;
+  
 }
