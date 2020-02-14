@@ -362,6 +362,7 @@ form > h2 {
   letter-spacing: 2px;
   font-size: 20px;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 @-webkit-keyframes line-grow {
