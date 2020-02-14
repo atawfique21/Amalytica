@@ -28,7 +28,8 @@ class ProductsController < ApplicationController
         :asin,
         :image,
         :title,
-        :user_id
+        :user_id,
+        :price
     )
   end
 
