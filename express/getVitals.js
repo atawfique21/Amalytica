@@ -17,8 +17,19 @@ async function vitalsInfo(ASIN) {
     let title = await driver.findElement(By.id("productTitle")).getText()
     await driver.sleep(1000)
     let image = await driver.findElement(By.xpath(`//*[@id="landingImage"]`)).getAttribute("src");
-    let buyboxprice = await driver.findElement(By.id("price_inside_buybox")).getText();
-    await driver.findElement(By.xpath("(//a[contains(@class,'a-touch-link a-box')]//div)[1]")).click();
+
+    try {
+      var buyboxprice = await driver.findElement(By.id("price_inside_buybox")).getText();
+    } catch (e) {
+      var buyboxprice = await driver.findElement(By.id("priceblock_ourprice")).getText();
+    }
+
+    try {
+      await driver.findElement(By.className("olp-text-box")).click();
+    } catch (Exception) {
+      await driver.findElement(By.xpath('//*[@id="mbc-upd-olp-link"]')).click();
+    }
+
     await driver.sleep(2000)
 
     try {
