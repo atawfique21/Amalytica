@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
   # return asin, image and product title as response.
   before_action :set_user, only: [:create, :index]
   before_action :set_product, only: [:show]
-  skip_before_action :authorize_request, only: :create
+  skip_before_action :authorize_request, only: [:create, :show]
 
   # GET /products
   def index
@@ -13,11 +13,12 @@ class ProductsController < ApplicationController
 
   def create
     Product.create!(product_params)
-    json_response(@product, :created)
+    json_response(product_params, :created)
   end
 
-  # GET /products/:id
+  # GET /products/:asin
   def show
+    @product = Product.find_by_asin(params[:asin])
     json_response(@product)
   end
 
@@ -34,7 +35,7 @@ class ProductsController < ApplicationController
   end
 
   def set_product
-    @product = Product.find(params[:id])
+    @product = Product.find_by_asin(params[:asin])
   end
 
   def set_user

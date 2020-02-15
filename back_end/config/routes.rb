@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   post 'signup', to: 'users#create'
   post 'products', to: 'products#create'
   get 'products/user/:user_id', to: 'products#index'
-  get 'products/:id', to: 'products#show'
+  get 'products/:asin', to: 'products#show'
 end
