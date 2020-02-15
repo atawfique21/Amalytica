@@ -3,7 +3,7 @@ async function vitalsInfo(ASIN) {
   const firefox = require('selenium-webdriver/firefox');
 
   var op = new firefox.Options()
-  op.addArguments("--headless");
+  // op.addArguments("--headless");
   op.addArguments("--window-size=1920,1080")
 
   const driver = new Builder()
