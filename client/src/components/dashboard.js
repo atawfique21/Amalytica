@@ -1,5 +1,6 @@
 import React from 'react'
 import { getVitals, checkDuplicate } from '../services/seleniumHelper'
+import search from '../assets/search.png'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -23,60 +24,36 @@ class Dashboard extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault()
 
-    const duplicateReq = await checkDuplicate(this.state.ASIN)
-
-    if (duplicateReq) {
+    if (!this.state.ASIN) {
       this.setState({
-        errorText: "Please enter a unique ASIN, this one is already in the database."
+        errorText: "Please enter an ASIN."
       })
-      return
+    } else if (this.state.ASIN.length !== 10) {
+      this.setState({
+        errorText: "Please enter a valid ASIN."
+      })
     } else {
-      this.setState({
-        dataLoading: true
-      })
-      const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
-      this.setState({
-        currentProducts: [req, ...this.state.currentProducts],
-        dataLoading: false,
-        errorText: false
-      })
-      return;
+
+      const duplicateReq = await checkDuplicate(this.state.ASIN)
+
+      if (duplicateReq) {
+        this.setState({
+          errorText: "Please enter a unique ASIN, this one is already in the database."
+        })
+        return
+      } else {
+        this.setState({
+          dataLoading: true
+        })
+        const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
+        this.setState({
+          currentProducts: [req, ...this.state.currentProducts],
+          dataLoading: false,
+          errorText: false
+        })
+        return;
+      }
     }
-
-    // await checkDuplicate(this.state.ASIN)
-    //   .then(function (response) {
-    //     this.setState({
-    //       errorText: "Please enter a unique ASIN, this one is already in the database."
-    //     })
-    //     return;
-    //   })
-    //   .catch(async function (error) {
-    //     this.setState({
-    //       dataLoading: true
-    //     })
-    //     const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
-    //     this.setState({
-    //       currentProducts: [req, ...this.state.currentProducts],
-    //       dataLoading: false,
-    //       errorText: false
-    //     })
-    //     return;
-    //   })
-
-    // try {
-    //   await checkDuplicate(this.state.ASIN)
-
-    // } catch (e) {
-    //   console.log(e)
-
-    // }
-
-    // console.log(duplicateReq.data)
-    // if (!duplicateReq.data) {
-
-    // } else {
-
-    // }
   }
 
   render() {
@@ -89,14 +66,21 @@ class Dashboard extends React.Component {
             </div> :
             < div className="dashboard" >
               <h1>Hello, {this.props.currentUser.name}</h1>
-              <form onSubmit={(e) => { this.handleSubmit(e) }}>
+              <form className="asin-search-form" onSubmit={(e) => { this.handleSubmit(e) }}>
                 <input
                   type="text"
+                  placeholder="Enter ASIN..."
+                  className="search"
                   onChange={(e) => { this.handleChange(e) }}
                   onSubmit={(e) => { this.handleSubmit(e) }}
                 />
+                <img
+                  src={search}
+                  onClick={(e) => { this.handleSubmit(e) }}
+                />
                 <input
                   type="submit"
+                  className="search-button"
                   onSubmit={(e) => { this.handleSubmit(e) }}
                 />
               </form>
