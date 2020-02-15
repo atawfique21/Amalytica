@@ -1,5 +1,5 @@
 import React from 'react'
-import { getVitals } from '../services/seleniumHelper'
+import { getVitals, checkDuplicate } from '../services/seleniumHelper'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -8,7 +8,8 @@ class Dashboard extends React.Component {
     this.state = {
       ASIN: null,
       currentProducts: [],
-      dataLoading: false
+      dataLoading: false,
+      errorText: false
     }
   }
 
@@ -21,14 +22,61 @@ class Dashboard extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    this.setState({
-      dataLoading: true
-    })
-    const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
-    this.setState({
-      currentProducts: [req, ...this.state.currentProducts],
-      dataLoading: false
-    })
+
+    const duplicateReq = await checkDuplicate(this.state.ASIN)
+
+    if (duplicateReq) {
+      this.setState({
+        errorText: "Please enter a unique ASIN, this one is already in the database."
+      })
+      return
+    } else {
+      this.setState({
+        dataLoading: true
+      })
+      const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
+      this.setState({
+        currentProducts: [req, ...this.state.currentProducts],
+        dataLoading: false,
+        errorText: false
+      })
+      return;
+    }
+
+    // await checkDuplicate(this.state.ASIN)
+    //   .then(function (response) {
+    //     this.setState({
+    //       errorText: "Please enter a unique ASIN, this one is already in the database."
+    //     })
+    //     return;
+    //   })
+    //   .catch(async function (error) {
+    //     this.setState({
+    //       dataLoading: true
+    //     })
+    //     const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
+    //     this.setState({
+    //       currentProducts: [req, ...this.state.currentProducts],
+    //       dataLoading: false,
+    //       errorText: false
+    //     })
+    //     return;
+    //   })
+
+    // try {
+    //   await checkDuplicate(this.state.ASIN)
+
+    // } catch (e) {
+    //   console.log(e)
+
+    // }
+
+    // console.log(duplicateReq.data)
+    // if (!duplicateReq.data) {
+
+    // } else {
+
+    // }
   }
 
   render() {
@@ -53,6 +101,9 @@ class Dashboard extends React.Component {
                 />
               </form>
               <div className="data-wrapper">
+                {this.state.errorText &&
+                  <h3>{this.state.errorText}</h3>
+                }
                 {
                   this.state.dataLoading &&
                   <div className="single-data loading-wrapper">
@@ -64,7 +115,7 @@ class Dashboard extends React.Component {
                       <div className="line line4"></div>
                       <div className="line line5"></div>
                     </div>
-                    <h3>Getting data for ASIN:</h3>
+                    <h3>Getting vital product data for ASIN:</h3>
                     <h4>{this.state.ASIN}</h4>
                   </div>
                 }
