@@ -277,7 +277,6 @@ form > .search {
 form > .search::placeholder {
   color: #5867dd86;
   transition: all 0.20s ease-in-out;
-
 }
 
 form > .search:hover::placeholder {
@@ -286,11 +285,10 @@ form > .search:hover::placeholder {
 
 form > .search:hover {
   border: 2px solid #5867dd;
-  letter-spacing: 6px;
 }
 
 form > img {
-  height: 40px;
+  height: 38px;
   width: auto;
   margin: 5px;
   cursor: pointer;
