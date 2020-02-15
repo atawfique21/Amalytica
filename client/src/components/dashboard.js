@@ -100,14 +100,15 @@ class Dashboard extends React.Component {
                   onSubmit={(e) => { this.handleSubmit(e) }}
                 />
               </form>
-              <div className="data-wrapper">
-                {this.state.errorText &&
+              {this.state.errorText &&
+                <div className="alert-danger">
                   <h3>{this.state.errorText}</h3>
-                }
+                </div>
+              }
+              <div className="data-wrapper">
                 {
                   this.state.dataLoading &&
                   <div className="single-data loading-wrapper">
-                    {/* <img src={Spinner}></img> */}
                     <div className="loader">
                       <div className="line line1"></div>
                       <div className="line line2"></div>
@@ -136,7 +137,6 @@ class Dashboard extends React.Component {
                       <h2>{product.price}</h2>
                     </div>
                   )
-                }
                 }
               </div>
             </div >
