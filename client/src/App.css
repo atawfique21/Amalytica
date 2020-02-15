@@ -253,6 +253,55 @@ form > h2 {
   font-size: 24px;
 }
 
+.asin-search-form{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+form > .search {
+  border: none;
+  border-radius: 5px;
+  min-height: 25px;
+  min-width: 100%;
+  padding: 3%;
+  font-size: 16px;
+  outline: none;
+  border: 2px solid #5868dd86;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  transition: all 0.20s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+form > .search::placeholder {
+  color: #5867dd86;
+  transition: all 0.20s ease-in-out;
+
+}
+
+form > .search:hover::placeholder {
+  color: #5867dd;
+}
+
+form > .search:hover {
+  border: 2px solid #5867dd;
+  letter-spacing: 6px;
+}
+
+form > img {
+  height: 40px;
+  width: auto;
+  margin: 5px;
+  cursor: pointer;
+}
+
+form > .search-button {
+  max-width: 1px;
+  visibility: hidden;
+}
+
+
 .alert-danger {
   background: #fd397a;
   border: 1px solid #fd397a;
