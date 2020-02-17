@@ -15,7 +15,13 @@ async function getBuyBox(ASIN) {
     await driver.manage().setTimeouts({ implicit: 5000, pageLoad: 20000, script: 5000 })
     await driver.get(`https://www.amazon.com/dp/${ASIN}`);
     await driver.sleep(1000)
-    let buyboxseller = await driver.findElement(By.id("merchant-info")).getText();
+    try {
+      var buyboxseller = await driver.findElement(By.id("merchant-info")).getText();
+    } catch (e) {
+      var seller = await driver.findElement(By.xpath("//p[@class='a-spacing-none']")).getText();
+      var shipment = await driver.findElement(By.xpath("//p[@class='a-spacing-small']")).getText();
+      var buyboxseller = `${seller}, ${shipment}`
+    }
     await driver.wait(until.elementLocated(By.id('add-to-cart-button'))).click();
     await driver.sleep(2000)
 
