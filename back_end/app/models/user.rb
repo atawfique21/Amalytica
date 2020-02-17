@@ -5,4 +5,5 @@ class User < ApplicationRecord
   has_many :products, foreign_key: :user_id
   # Validations
   validates_presence_of :name, :username, :password_digest
+  validates_uniqueness_of :username
 end

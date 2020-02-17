@@ -1,16 +1,18 @@
 class ProductsController < ApplicationController
-  # POST /products
-  # return asin, image and product title as response.
   before_action :set_user, only: [:create, :index]
-  before_action :set_product, only: [:show]
+  # before_action :set_product, only: [:show]
   skip_before_action :authorize_request, only: [:create, :show]
 
-  # GET /products
+  # GET /products/user/:id
   def index
     @products = @user.products
-    json_response(@products)
+    # json_response(@products)
+    render json: @products, include: :analytics
+    # CHANGE THIS JSON RESPONSE TO INCLUDE ANALYTICS!
   end
 
+  # POST /products
+  # return asin, image and product title as response.
   def create
     Product.create!(product_params)
     json_response(product_params, :created)
@@ -19,7 +21,7 @@ class ProductsController < ApplicationController
   # GET /products/:asin
   def show
     @product = Product.find_by_asin(params[:asin])
-    json_response(@product)
+    render json: @product, include: :analytics
   end
 
   private
@@ -34,9 +36,9 @@ class ProductsController < ApplicationController
     )
   end
 
-  def set_product
-    @product = Product.find_by_asin(params[:asin])
-  end
+  # def set_product
+  #   @product = Product.find_by_asin(params[:asin])
+  # end
 
   def set_user
     @user = User.find(params[:user_id])

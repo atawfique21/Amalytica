@@ -2,18 +2,12 @@
 
 one:
   user: one
-  asin: MyString
   image: MyString
+  price: MyString
   title: MyString
-  sellers: 1
-  stars: 1
-  ratings: 1
 
 two:
   user: two
-  asin: MyString
   image: MyString
+  price: MyString
   title: MyString
-  sellers: 1
-  stars: 1
-  ratings: 1
