@@ -1,5 +1,5 @@
 import React from 'react'
-import { getVitals, checkDuplicate } from '../services/seleniumHelper'
+import { getVitals, checkDuplicate, getBuyBox } from '../services/seleniumHelper'
 import search from '../assets/search.png'
 
 class Dashboard extends React.Component {
@@ -9,7 +9,10 @@ class Dashboard extends React.Component {
     this.state = {
       ASIN: null,
       currentProducts: [],
-      dataLoading: false,
+      currentBuyBoxes: [],
+      vitalDataLoading: false,
+      buyBoxDataLoading: false,
+      buyBoxCounter: -1,
       errorText: false
     }
   }
@@ -23,7 +26,6 @@ class Dashboard extends React.Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-
     if (!this.state.ASIN) {
       this.setState({
         errorText: "Please enter an ASIN."
@@ -42,21 +44,57 @@ class Dashboard extends React.Component {
         })
         return
       } else {
+        // VITAL DATA LOADING
         this.setState({
-          dataLoading: true
-        })
-        const req = await getVitals(this.state.ASIN, this.props.currentUser.id)
-        this.setState({
-          currentProducts: [req, ...this.state.currentProducts],
-          dataLoading: false,
+          vitalDataLoading: true,
           errorText: false
         })
+        const vitalsReq = await getVitals(this.state.ASIN, this.props.currentUser.id)
+        this.setState({
+          currentProducts: [vitalsReq, ...this.state.currentProducts],
+          vitalDataLoading: false,
+          buyBoxDataLoading: true
+        })
+        // VITAL DATA LOADING
+        // BUY BOX DATA LOADING
+        const buyBoxReq = await getBuyBox(this.state.ASIN)
+        const BuyBoxObj = {
+          [this.state.ASIN]: buyBoxReq
+        }
+        let buyBoxCounter = this.state.buyBoxCounter
+        buyBoxCounter++
+        this.setState({
+          currentBuyBoxes: [BuyBoxObj, ...this.state.currentBuyBoxes],
+          buyBoxDataLoading: false,
+          buyBoxCounter
+        })
+        console.log(this.state.currentBuyBoxes)
+        // BUY BOX DATA LOADING
         return;
       }
     }
   }
 
+  componentDidUpdate() {
+    console.log(this.props.currentProducts)
+  }
+
   render() {
+    function findNumbers(string) {
+      string.toString()
+      let numbers = string.match(/\d+/g).map(Number)
+      return numbers
+    }
+
+    function lastWord(string) {
+      let n = string.split(" ");
+      n = n[n.length - 1];
+      if (n[n.length - 1] === ".") {
+        return n.slice(0, -1)
+      } else {
+        return n
+      }
+    }
     return (
       <div>
         {
@@ -90,8 +128,56 @@ class Dashboard extends React.Component {
                 </div>
               }
               <div className="data-wrapper">
+                {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
+                  <div className="single-data" key={key}>
+                    <h1>{product.title}</h1>
+                    <h2>{product.asin}</h2>
+                    <img src={product.image}></img>
+                    <h2>{product.price}</h2>
+                    {this.state.buyBoxDataLoading &&
+                      <div className="loading-wrapper">
+                        <div className="loader">
+                          <div className="line line1"></div>
+                          <div className="line line2"></div>
+                          <div className="line line3"></div>
+                          <div className="line line4"></div>
+                          <div className="line line5"></div>
+                        </div>
+                        <h3>Getting buy box data</h3>
+                      </div>
+                    }
+                  </div>
+                )}
+                {this.props.currentProducts &&
+                  this.props.currentProducts.map((product, key) =>
+                    <div className="single-data" key={key}>
+                      <h1>{product.title}</h1>
+                      <h2>{product.asin}</h2>
+                      <img src={product.image}></img>
+                      <h2>{product.price}</h2>
+                      {product.buy_boxes &&
+                        product.buy_boxes.map((buybox, key) =>
+                          <div className="single-buy-box" key={key}>
+                            <h4>Buy Box</h4>
+                            <div className="buy-box-details-wrapper">
+                              <div className="buy-box-details">
+                                <h3>Price</h3>
+                                <h4>{buybox.price}</h4>
+                              </div>
+                              <div className="buy-box-details">
+                                <h3>Available</h3>
+                                <h4>{findNumbers(buybox.available)}</h4>
+                              </div>
+                            </div>
+                            <h5>Sold By {lastWord(buybox.seller)}</h5>
+                          </div>
+                        )
+                      }
+                    </div>
+                  )
+                }
                 {
-                  this.state.dataLoading &&
+                  this.state.vitalDataLoading &&
                   <div className="single-data loading-wrapper">
                     <div className="loader">
                       <div className="line line1"></div>
@@ -104,23 +190,8 @@ class Dashboard extends React.Component {
                     <h4>{this.state.ASIN}</h4>
                   </div>
                 }
-                {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
-                  <div className="single-data" key={key}>
-                    <h1>{product.title}</h1>
-                    <h2>{product.asin}</h2>
-                    <img src={product.image}></img>
-                    <h2>{product.price}</h2>
-                  </div>
-                )}
-                {this.props.currentProducts &&
-                  this.props.currentProducts.map((product, key) =>
-                    <div className="single-data" key={key}>
-                      <h1>{product.title}</h1>
-                      <h2>{product.asin}</h2>
-                      <img src={product.image}></img>
-                      <h2>{product.price}</h2>
-                    </div>
-                  )
+                {
+
                 }
               </div>
             </div >

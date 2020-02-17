@@ -17,6 +17,7 @@ export const checkDuplicate = async (ASIN) => {
 export const getVitals = async (ASIN, user_id) => {
   user_id = parseInt(user_id)
   const resp = await api.get(`/vitals/${ASIN}`);
+  ASIN = ASIN.toLowerCase()
   let productData = {
     asin: ASIN,
     image: resp.data.image,
@@ -25,5 +26,20 @@ export const getVitals = async (ASIN, user_id) => {
     price: resp.data.buyboxprice
   }
   await Axios.post('http://localhost:3002/products', productData)
-  return productData;
+  return productData
+}
+
+export const getBuyBox = async (ASIN) => {
+  const resp = await api.get(`/buybox/${ASIN}`);
+  ASIN = ASIN.toUpperCase()
+  let productData = {
+    product_asin: ASIN,
+    price: resp.data.buyboxprice,
+    seller: resp.data.buyboxseller,
+    available: resp.data.buyboxqty,
+
+  }
+  console.log(productData)
+  await Axios.post('http://localhost:3002/buybox', productData)
+  return productData
 }
