@@ -7,8 +7,7 @@ class ProductsController < ApplicationController
   def index
     @products = @user.products
     # json_response(@products)
-    render json: @products, include: :analytics
-    # CHANGE THIS JSON RESPONSE TO INCLUDE ANALYTICS!
+    render json: @products, include: %w(buy_boxes analytics)
   end
 
   # POST /products
@@ -21,7 +20,7 @@ class ProductsController < ApplicationController
   # GET /products/:asin
   def show
     @product = Product.find_by_asin(params[:asin])
-    render json: @product, include: :analytics
+    render json: @product, include: %w(buy_boxes analytics)
   end
 
   private
