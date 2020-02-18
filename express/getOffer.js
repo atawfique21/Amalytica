@@ -3,7 +3,7 @@ async function getOffer(ASIN, offerNum) {
   const firefox = require('selenium-webdriver/firefox');
 
   var op = new firefox.Options()
-  op.addArguments("--headless");
+  // op.addArguments("--headless");
   op.addArguments("--window-size=1920,1080")
 
   const driver = new Builder()
@@ -49,7 +49,12 @@ async function getOffer(ASIN, offerNum) {
       }
     }
 
-    let storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNum}]`)).getText();
+    var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNum}]`)).getText();
+
+    if (storename.length === 0) {
+      var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNumPlusOne}]`)).getText();
+    }
+
     try {
       await driver.sleep(1000)
       await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${offerNumPlusOne}]`))
