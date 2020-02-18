@@ -49,7 +49,7 @@ async function getOffer(ASIN, offerNum) {
       }
     }
 
-    let storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNumMinusOne}]`)).getText();
+    let storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNum}]`)).getText();
     try {
       await driver.sleep(1000)
       await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${offerNumPlusOne}]`))
