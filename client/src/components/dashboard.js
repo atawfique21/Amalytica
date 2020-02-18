@@ -1,5 +1,5 @@
 import React from 'react'
-import { getVitals, checkDuplicate, getBuyBox } from '../services/seleniumHelper'
+import { getVitals, checkDuplicate, getBuyBox, getOffer } from '../services/seleniumHelper'
 import search from '../assets/search.png'
 
 class Dashboard extends React.Component {
@@ -12,6 +12,8 @@ class Dashboard extends React.Component {
       currentBuyBoxes: [],
       vitalDataLoading: false,
       buyBoxDataLoading: false,
+      offerOneDataLoading: false,
+      offerTwoDataLoading: false,
       buyBoxCounter: -1,
       errorText: false
     }
@@ -58,28 +60,41 @@ class Dashboard extends React.Component {
         // VITAL DATA LOADING
         // BUY BOX DATA LOADING
         const buyBoxReq = await getBuyBox(this.state.ASIN)
-
-        // We need to go through each obj in currentProducts and find the one
-        // that matches the ASIN from the buyboxReq. We then need to spread
-        // operator that obj in CurrentProjects and add a new key named buy
-        // box and spreadoperator the buyboxReq..
-
-        let products = [...this.state.currentProducts]
-        console.log(products)
-        let index = products.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
-        console.log(index)
-        products[index].buy_boxes = [{ ...buyBoxReq }]
-        this.setState({ products, buyBoxDataLoading: false })
-
-        console.log(this.state.currentProducts)
+        let currentProducts = [...this.state.currentProducts]
+        let index = currentProducts.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
+        currentProducts[index].buy_boxes = [{ ...buyBoxReq }]
+        this.setState({ currentProducts, buyBoxDataLoading: false })
         // BUY BOX DATA LOADING
+        // OFFERS LOADING
+        if (vitalsReq.sellers.length === 3) {
+
+          this.setState({ offerOneDataLoading: true })
+          const offerReq1 = await getOffer(this.state.ASIN, 1)
+          let currentProducts = [...this.state.currentProducts]
+          let index = currentProducts.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
+          currentProducts[index].offers = [{ ...offerReq1 }]
+          this.setState({ currentProducts, offerOneDataLoading: false, offerTwoDataLoading: true })
+
+
+          const offerReq2 = await getOffer(this.state.ASIN, 2)
+          currentProducts = [...this.state.currentProducts]
+          index = currentProducts.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
+          currentProducts[index].offers = [...currentProducts[index].offers, { ...offerReq2 }]
+          this.setState({ currentProducts, offerTwoDataLoading: false })
+
+
+        } else if (vitalsReq.sellers.length === 2) {
+          const offerReq1 = await getOffer(this.state.ASIN, 1)
+          let products = [...this.state.currentProducts]
+          let index = products.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
+          products[index].products = [...products[index].products, { ...offerReq1 }]
+        } else {
+          return
+        }
+        // OFFERS LOADING
         return;
       }
     }
-  }
-
-  componentDidMount() {
-    console.log(this.state.currentProducts)
   }
 
   render() {
@@ -181,6 +196,49 @@ class Dashboard extends React.Component {
                         </div>
                       )
                     }
+                    {this.state.offerOneDataLoading &&
+                      <div className="loading-wrapper">
+                        <div className="loader">
+                          <div className="line line1"></div>
+                          <div className="line line2"></div>
+                          <div className="line line3"></div>
+                          <div className="line line4"></div>
+                          <div className="line line5"></div>
+                        </div>
+                        <h3>Getting offer 1 data</h3>
+                      </div>
+                    }
+                    {product.offers &&
+                      product.offers.map((offer, key) =>
+                        <div className="single-buy-box" key={key}>
+                          <h4>Offer {key + 1}</h4>
+                          <div className="buy-box-details-wrapper">
+                            <div className="buy-box-details">
+                              <h3>Price</h3>
+                              <h4>{offer.price}</h4>
+                            </div>
+                            <div className="buy-box-details">
+                              <h3>Available</h3>
+                              <h4>{findNumbers(offer.available)}</h4>
+                            </div>
+                          </div>
+                          <h5>{offer.condition} condition</h5>
+                          <h5>Sold By {lastWord(offer.seller)}</h5>
+                        </div>
+                      )
+                    }
+                    {this.state.offerTwoDataLoading &&
+                      <div className="loading-wrapper">
+                        <div className="loader">
+                          <div className="line line1"></div>
+                          <div className="line line2"></div>
+                          <div className="line line3"></div>
+                          <div className="line line4"></div>
+                          <div className="line line5"></div>
+                        </div>
+                        <h3>Getting offer 2 data</h3>
+                      </div>
+                    }
                   </div>
                 )}
                 {this.props.currentProducts &&
@@ -205,6 +263,25 @@ class Dashboard extends React.Component {
                               </div>
                             </div>
                             <h5>Sold By {lastWord(buybox.seller)}</h5>
+                          </div>
+                        )
+                      }
+                      {product.analytics &&
+                        product.analytics.map((offer, key) =>
+                          <div className="single-buy-box" key={key}>
+                            <h4>Offer {key + 1}</h4>
+                            <div className="buy-box-details-wrapper">
+                              <div className="buy-box-details">
+                                <h3>Price</h3>
+                                <h4>{offer.price}</h4>
+                              </div>
+                              <div className="buy-box-details">
+                                <h3>Available</h3>
+                                <h4>{findNumbers(offer.available)}</h4>
+                              </div>
+                            </div>
+                            <h5>{offer.condition} condition</h5>
+                            <h5>Sold By {lastWord(offer.seller)}</h5>
                           </div>
                         )
                       }
