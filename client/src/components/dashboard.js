@@ -58,25 +58,28 @@ class Dashboard extends React.Component {
         // VITAL DATA LOADING
         // BUY BOX DATA LOADING
         const buyBoxReq = await getBuyBox(this.state.ASIN)
-        const BuyBoxObj = {
-          [this.state.ASIN]: buyBoxReq
-        }
-        let buyBoxCounter = this.state.buyBoxCounter
-        buyBoxCounter++
-        this.setState({
-          currentBuyBoxes: [BuyBoxObj, ...this.state.currentBuyBoxes],
-          buyBoxDataLoading: false,
-          buyBoxCounter
-        })
-        console.log(this.state.currentBuyBoxes)
+
+        // We need to go through each obj in currentProducts and find the one
+        // that matches the ASIN from the buyboxReq. We then need to spread
+        // operator that obj in CurrentProjects and add a new key named buy
+        // box and spreadoperator the buyboxReq..
+
+        let products = [...this.state.currentProducts]
+        console.log(products)
+        let index = products.findIndex(obj => obj.asin.toLowerCase() === this.state.ASIN.toLowerCase());
+        console.log(index)
+        products[index].buy_boxes = [{ ...buyBoxReq }]
+        this.setState({ products, buyBoxDataLoading: false })
+
+        console.log(this.state.currentProducts)
         // BUY BOX DATA LOADING
         return;
       }
     }
   }
 
-  componentDidUpdate() {
-    console.log(this.props.currentProducts)
+  componentDidMount() {
+    console.log(this.state.currentProducts)
   }
 
   render() {
@@ -127,6 +130,20 @@ class Dashboard extends React.Component {
                   <h3>{this.state.errorText}</h3>
                 </div>
               }
+              {
+                this.state.vitalDataLoading &&
+                <div className="single-data loading-wrapper">
+                  <div className="loader">
+                    <div className="line line1"></div>
+                    <div className="line line2"></div>
+                    <div className="line line3"></div>
+                    <div className="line line4"></div>
+                    <div className="line line5"></div>
+                  </div>
+                  <h3>Getting vital product data for ASIN:</h3>
+                  <h4>{this.state.ASIN}</h4>
+                </div>
+              }
               <div className="data-wrapper">
                 {this.state.currentProducts && this.state.currentProducts.map((product, key) =>
                   <div className="single-data" key={key}>
@@ -145,6 +162,24 @@ class Dashboard extends React.Component {
                         </div>
                         <h3>Getting buy box data</h3>
                       </div>
+                    }
+                    {product.buy_boxes &&
+                      product.buy_boxes.map((buybox, key) =>
+                        <div className="single-buy-box" key={key}>
+                          <h4>Buy Box</h4>
+                          <div className="buy-box-details-wrapper">
+                            <div className="buy-box-details">
+                              <h3>Price</h3>
+                              <h4>{buybox.price}</h4>
+                            </div>
+                            <div className="buy-box-details">
+                              <h3>Available</h3>
+                              <h4>{findNumbers(buybox.available)}</h4>
+                            </div>
+                          </div>
+                          <h5>Sold By {lastWord(buybox.seller)}</h5>
+                        </div>
+                      )
                     }
                   </div>
                 )}
@@ -175,23 +210,6 @@ class Dashboard extends React.Component {
                       }
                     </div>
                   )
-                }
-                {
-                  this.state.vitalDataLoading &&
-                  <div className="single-data loading-wrapper">
-                    <div className="loader">
-                      <div className="line line1"></div>
-                      <div className="line line2"></div>
-                      <div className="line line3"></div>
-                      <div className="line line4"></div>
-                      <div className="line line5"></div>
-                    </div>
-                    <h3>Getting vital product data for ASIN:</h3>
-                    <h4>{this.state.ASIN}</h4>
-                  </div>
-                }
-                {
-
                 }
               </div>
             </div >

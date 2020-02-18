@@ -23,7 +23,8 @@ export const getVitals = async (ASIN, user_id) => {
     image: resp.data.image,
     title: resp.data.title,
     user_id: user_id,
-    price: resp.data.buyboxprice
+    price: resp.data.buyboxprice,
+    buy_boxes: null
   }
   await Axios.post('http://localhost:3002/products', productData)
   return productData
