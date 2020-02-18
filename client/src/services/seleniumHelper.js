@@ -17,15 +17,19 @@ export const checkDuplicate = async (ASIN) => {
 export const getVitals = async (ASIN, user_id) => {
   user_id = parseInt(user_id)
   const resp = await api.get(`/vitals/${ASIN}`);
+  console.log(resp)
   ASIN = ASIN.toLowerCase()
   let productData = {
     asin: ASIN,
     image: resp.data.image,
     title: resp.data.title,
+    sellers: resp.data.offers,
     user_id: user_id,
     price: resp.data.buyboxprice,
-    buy_boxes: null
+    buy_boxes: null,
+    offers: null
   }
+  console.log(productData)
   await Axios.post('http://localhost:3002/products', productData)
   return productData
 }
@@ -38,9 +42,21 @@ export const getBuyBox = async (ASIN) => {
     price: resp.data.buyboxprice,
     seller: resp.data.buyboxseller,
     available: resp.data.buyboxqty,
-
   }
-  console.log(productData)
   await Axios.post('http://localhost:3002/buybox', productData)
+  return productData
+}
+
+export const getOffer = async (ASIN, offerNum) => {
+  const resp = await api.get(`/offer/${ASIN}/${offerNum}`)
+  ASIN = ASIN.toUpperCase()
+  let productData = {
+    product_asin: ASIN,
+    seller: resp.data.storename,
+    price: resp.data.price,
+    condition: resp.data.condition,
+    available: resp.data.sellerqty
+  }
+  await Axios.post('http://localhost:3002/analytics', productData)
   return productData
 }
