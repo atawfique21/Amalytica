@@ -23,6 +23,11 @@ class ProductsController < ApplicationController
     render json: @product, include: %w(buy_boxes analytics)
   end
 
+  def suicide
+    @product = Product.find_by_asin(params[:asin])
+
+  end
+
   private
 
   def product_params

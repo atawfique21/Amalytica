@@ -10,8 +10,8 @@ class BuyBoxesController < ApplicationController
 
   # POST /buybox
   def create
-    BuyBox.create!(buybox_params)
-    json_response(buybox_params, :created)
+    createdbuybox = BuyBox.create!(buybox_params)
+    json_response(createdbuybox, :created)
   end
 
   # GET /buybox/:asin
