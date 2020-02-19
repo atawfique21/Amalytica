@@ -10,8 +10,8 @@ class AnalyticsController < ApplicationController
 
     # POST /analytics
     def create
-      Analytic.create!(analytic_params)
-      json_response(analytic_params, :created)
+      createdanalytic = Analytic.create!(analytic_params)
+      json_response(createdanalytic, :created)
     end
 
     # GET /analytics/:asin
