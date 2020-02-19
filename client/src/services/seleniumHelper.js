@@ -27,7 +27,7 @@ export const getVitals = async (ASIN, user_id) => {
     user_id: user_id,
     price: resp.data.buyboxprice,
     buy_boxes: null,
-    offers: null
+    offers: null,
   }
   console.log(productData)
   await Axios.post('http://localhost:3002/products', productData)
@@ -43,8 +43,8 @@ export const getBuyBox = async (ASIN) => {
     seller: resp.data.buyboxseller,
     available: resp.data.buyboxqty,
   }
-  await Axios.post('http://localhost:3002/buybox', productData)
-  return productData
+  let rbm = await Axios.post('http://localhost:3002/buybox', productData)
+  return rbm.data
 }
 
 export const getOffer = async (ASIN, offerNum) => {
