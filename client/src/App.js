@@ -7,6 +7,7 @@ import Register from './components/register'
 import Dashboard from './components/dashboard'
 import { Route, withRouter } from 'react-router-dom'
 import { loginUser, registerUser, verifyUser, getProducts } from './services/apiHelper'
+import { getBuyBox } from './services/seleniumHelper'
 
 
 class App extends React.Component {
@@ -16,7 +17,8 @@ class App extends React.Component {
     this.state = {
       errorText: "",
       currentUser: null,
-      currentProducts: null
+      currentProducts: null,
+      refreshing: false
     }
   }
 
@@ -95,6 +97,27 @@ class App extends React.Component {
     }
   }
 
+  handleRefresh = async (e, product) => {
+    e.preventDefault()
+    let currentProducts = this.state.currentProducts
+    let index = currentProducts.findIndex(obj => obj.asin === product.asin)
+    let productToUpdate = currentProducts.splice(index, 1)
+    console.log(productToUpdate)
+
+    this.setState({ currentProducts, refreshing: true })
+
+    const buyBoxReq = await getBuyBox(productToUpdate[0].asin)
+    productToUpdate[0].buy_boxes.push(buyBoxReq)
+
+    currentProducts = [...productToUpdate, ...currentProducts]
+
+    this.setState({ currentProducts, refreshing: false })
+    // .pop product from this.state.products and instead, put up a div that says data is refreshing... (through this.props.data refreshing)
+    // push the new buy box data & offer data into the product's buy_boxes, analytics
+    // send data to backend through axios.post /analytics, /buybox
+    // set state w/ product with unshift so it appears in the front and remove true in this.props.datarefreshing 
+  }
+
   render() {
     return (
       <div className="App">
@@ -113,7 +136,7 @@ class App extends React.Component {
         )} />
 
         <Route path="/dashboard" render={() => (
-          <Dashboard currentUser={this.state.currentUser} currentProducts={this.state.currentProducts} />
+          <Dashboard currentUser={this.state.currentUser} currentProducts={this.state.currentProducts} handleRefresh={this.handleRefresh} refreshing={this.state.refreshing} />
         )} />
 
 
