@@ -2,6 +2,8 @@ import React from 'react'
 import { getVitals, checkDuplicate, getBuyBox, getOffer } from '../services/seleniumHelper'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import search from '../assets/search.png'
+import needmore from '../assets/needmore.png'
+import refresh from '../assets/refresh.png'
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -105,14 +107,114 @@ class Dashboard extends React.Component {
 
     var colorArray = ['#FF6633', '#FF33FF', '#00B3E6', '#999966', '#99FF99', '#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A']
     return (
-      <LineChart width={430} height={215}>
+      <LineChart width={430} height={215} syncId={`${product.asin}`}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" type="category" allowDuplicatedCategory={true} />
-        <YAxis dataKey="price" domain={[(dataMin) => parseInt(dataMin - 2), (dataMax) => parseInt(dataMax + 2)]} allowDataOverflow={true} />
+        <YAxis dataKey="price" type="number" domain={[(dataMin) => parseInt(dataMin - 2), (dataMax) => parseInt(dataMax + 2)]} allowDecimals={true} allowDataOverflow={true} />
+        <Tooltip />
+        <Legend />
+        {final.map((datapoint, index) => (
+          <Line dataKey="price" data={datapoint.data} name={datapoint.seller} key={datapoint.seller} stroke={colorArray[index]} strokeWidth="3px" />
+        ))}
+      </LineChart>
+    )
+  }
+
+  renderSalesChart = (product) => {
+    let final = []
+    product.analytics.map(analytic => {
+      let index = final.findIndex(obj => obj.seller === this.findSeller(analytic.seller))
+      if (index === -1) {
+        let ls = { seller: this.findSeller(analytic.seller), data: [] }
+        for (let i = 0; i < product.analytics.length; i++) {
+          if (analytic.seller === product.analytics[i].seller) {
+            let newDate = Date.parse(product.analytics[i].created_at)
+            let jsDate = new Date(newDate)
+
+            let day = jsDate.getDate()
+            let getmonth = jsDate.getMonth()
+            let hour = jsDate.getHours()
+            let minute = jsDate.getMinutes()
+
+            var month = new Array();
+            month[0] = "January";
+            month[1] = "February";
+            month[2] = "March";
+            month[3] = "April";
+            month[4] = "May";
+            month[5] = "June";
+            month[6] = "July";
+            month[7] = "August";
+            month[8] = "September";
+            month[9] = "October";
+            month[10] = "November";
+            month[11] = "December";
+
+            month = month[getmonth]
+            month = month[0] + month[1] + month[2]
+
+            newDate = `${month} ${day}`
+            let editedAvailable = this.findNumbers(product.analytics[i].available)
+
+            let ms = { date: newDate, quantity: parseInt(editedAvailable) }
+            ls.data.push(ms)
+          }
+        }
+        final.push(ls)
+      }
+    })
+    product.buy_boxes.map(buybox => {
+      let index = final.findIndex(obj => obj.seller === this.findSeller(buybox.seller))
+      if (index === -1) {
+        let ls = { seller: this.findSeller(buybox.seller), data: [] }
+        for (let i = 0; i < product.buy_boxes.length; i++) {
+          if (buybox.seller === product.buy_boxes[i].seller) {
+            var newDate = Date.parse(product.buy_boxes[i].created_at)
+            let jsDate = new Date(newDate)
+
+            let day = jsDate.getDate()
+            let getmonth = jsDate.getMonth()
+            let hour = jsDate.getHours()
+            let minute = jsDate.getMinutes()
+
+            var month = new Array();
+            month[0] = "January";
+            month[1] = "February";
+            month[2] = "March";
+            month[3] = "April";
+            month[4] = "May";
+            month[5] = "June";
+            month[6] = "July";
+            month[7] = "August";
+            month[8] = "September";
+            month[9] = "October";
+            month[10] = "November";
+            month[11] = "December";
+
+            month = month[getmonth]
+            month = month[0] + month[1] + month[2]
+
+            newDate = `${month} ${day}`
+            let editedAvailable = this.findNumbers(product.buy_boxes[i].available)
+
+            let ms = { date: newDate, quantity: parseInt(editedAvailable) }
+            ls.data.push(ms)
+          }
+        }
+        final.push(ls)
+      }
+    })
+
+    var colorArray = ['#FF6633', '#FF33FF', '#00B3E6', '#999966', '#99FF99', '#B34D4D', '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A']
+    return (
+      <LineChart width={430} height={215} syncId={`${product.asin}`}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" type="category" allowDuplicatedCategory={true} />
+        <YAxis dataKey="quantity" type="number" domain={[(dataMin) => (dataMin - 5 < 0) ? 0 : parseInt(dataMin - 5), (dataMax) => (dataMax > 150) ? 150 : parseInt(dataMax + 5)]} allowDataOverflow={true} allowDecimals={true} />
         <Tooltip />
         <Legend />
         {final.map((analytics, index) => (
-          <Line dataKey="price" data={analytics.data} name={analytics.seller} key={analytics.seller} stroke={colorArray[index]} />
+          <Line dataKey="quantity" data={analytics.data} name={analytics.seller} key={analytics.seller} stroke={colorArray[index]} strokeWidth="3px" />
         ))}
       </LineChart>
     )
@@ -148,6 +250,17 @@ class Dashboard extends React.Component {
     } else {
       return string
     }
+  }
+
+  findNumbers = (string) => {
+    string.toString()
+    let splitString = string.split(' ')
+    if (splitString[4] === 'limit') {
+      let numbers = string.match(/\d+/g).map(Number)
+      return `${numbers} limit`
+    }
+    let numbers = string.match(/\d+/g).map(Number)
+    return numbers
   }
 
   handleSubmit = async (e) => {
@@ -222,12 +335,6 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    function findNumbers(string) {
-      string.toString()
-      let numbers = string.match(/\d+/g).map(Number)
-      return numbers
-    }
-
     return (
       <div>
         {
@@ -236,7 +343,6 @@ class Dashboard extends React.Component {
               <h2>Please <a href="/login">login</a> to see the dashboard.</h2>
             </div> :
             < div className="dashboard" >
-              <h1>Hello, {this.props.currentUser.name}</h1>
               <form className="asin-search-form" onSubmit={(e) => { this.handleSubmit(e) }}>
                 <input
                   type="text"
@@ -294,6 +400,9 @@ class Dashboard extends React.Component {
                     <h2>{product.asin}</h2>
                     <img src={product.image}></img>
                     <h2>{product.price}</h2>
+                    <h3>Price History</h3>
+                    <h6>VIA SELLER OVER TIME</h6>
+                    <img className="need-more" src={needmore}></img>
                     {this.state.buyBoxDataLoading &&
                       <div className="loading-wrapper">
                         <div className="loader">
@@ -317,7 +426,7 @@ class Dashboard extends React.Component {
                             </div>
                             <div className="buy-box-details">
                               <h3>Available</h3>
-                              <h4>{findNumbers(buybox.available)}</h4>
+                              <h4>{this.findNumbers(buybox.available)}</h4>
                             </div>
                           </div>
                           <h5>Sold By {this.findSeller(buybox.seller)}</h5>
@@ -347,7 +456,7 @@ class Dashboard extends React.Component {
                             </div>
                             <div className="buy-box-details">
                               <h3>Available</h3>
-                              <h4>{findNumbers(offer.available)}</h4>
+                              <h4>{this.findNumbers(offer.available)}</h4>
                             </div>
                           </div>
                           <h5>{offer.condition} condition</h5>
@@ -376,9 +485,16 @@ class Dashboard extends React.Component {
                       <h2>{product.asin}</h2>
                       <img src={product.image}></img>
                       <h2>{product.price}</h2>
-                      <h3>Price History</h3>
-                      <h6>VIA SELLER OVER TIME</h6>
-                      {this.props.currentProducts && this.renderChart(product)}
+                      <div className="chart-wrapper">
+                        <h3>Price History</h3>
+                        <h6>VIA SELLER OVER TIME</h6>
+                        {this.props.currentProducts && this.renderChart(product)}
+                      </div>
+                      <div className="chart-wrapper">
+                        <h3>Quantity History</h3>
+                        <h6>VIA SELLER OVER TIME</h6>
+                        {this.props.currentProducts && this.renderSalesChart(product)}
+                      </div>
                       {
                         product.buy_boxes &&
                         product.buy_boxes.map((buybox, key, arr) => {
@@ -393,7 +509,7 @@ class Dashboard extends React.Component {
                                   </div>
                                   <div className="buy-box-details">
                                     <h3>Available</h3>
-                                    <h4>{findNumbers(buybox.available)}</h4>
+                                    <h4>{this.findNumbers(buybox.available)}</h4>
                                   </div>
                                 </div>
                                 <h5>Sold By {this.findSeller(buybox.seller)}</h5>
@@ -409,7 +525,7 @@ class Dashboard extends React.Component {
                           if (arr.length - 2 === key || arr.length - 1 === key) {
                             return (
                               <div className="single-buy-box" key={key}>
-                                <h4>Offer {key + 1}</h4>
+                                <h4>Offer</h4>
                                 <div className="buy-box-details-wrapper">
                                   <div className="buy-box-details">
                                     <h3>Price</h3>
@@ -417,7 +533,7 @@ class Dashboard extends React.Component {
                                   </div>
                                   <div className="buy-box-details">
                                     <h3>Available</h3>
-                                    <h4>{findNumbers(offer.available)}</h4>
+                                    <h4>{this.findNumbers(offer.available)}</h4>
                                   </div>
                                 </div>
                                 <h5>{offer.condition} condition</h5>
@@ -428,7 +544,7 @@ class Dashboard extends React.Component {
                         }
                         )
                       }
-                      <button onClick={(e) => this.props.handleRefresh(e, product)} />
+                      <img src={refresh} onClick={(e) => this.props.handleRefresh(e, product)} className="refresh"></img>
                     </div>
                   )
                 }

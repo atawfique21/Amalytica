@@ -26,7 +26,8 @@ class BuyBoxesController < ApplicationController
         :product_asin,
         :seller,
         :available,
-        :price
+        :price,
+        :created_at
     )
   end
 

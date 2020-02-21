@@ -3,7 +3,7 @@ async function getOffer(ASIN, offerNum) {
   const firefox = require('selenium-webdriver/firefox');
 
   var op = new firefox.Options()
-  // op.addArguments("--headless");
+  op.addArguments("--headless");
   op.addArguments("--window-size=1920,1080")
 
   const driver = new Builder()
@@ -49,16 +49,16 @@ async function getOffer(ASIN, offerNum) {
       }
     }
 
-    var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNum}]`)).getText();
+    var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNumPlusOne}]`)).getText();
 
     if (storename.length === 0) {
-      var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNumPlusOne}]`)).getText();
+      var storename = await driver.findElement(By.xpath(`(//a[@role='link'])[${offerNum}]`)).getText();
     }
 
     try {
       await driver.sleep(1000)
       await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${offerNumPlusOne}]`))
-      var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${offerNum}]`)).getText()
+      var condition = await driver.findElement(By.xpath(`(//div[@id='aod-offer-heading']//h5)[${offerNumPlusOne}]`)).getText()
     } catch (Exception) {
       // await driver.get(`https://www.amazon.com/dp/${ASIN}`);
       // await driver.sleep(3000)
@@ -69,10 +69,11 @@ async function getOffer(ASIN, offerNum) {
     }
 
     await driver.sleep(1000)
-    await driver.findElement(By.xpath(`(//span[@id='a-autoid-2'])[${offerNum}]`)).click();
+    await driver.findElement(By.xpath(`(//input[@name='submit.addToCart'])[${offerNumPlusOne}]`)).click();
 
     driver.wait(until.elementLocated(By.id('hlb-view-cart-announce'))).click();
     await driver.sleep(3000)
+    let price = await driver.findElement(By.xpath("//span[@id='sc-subtotal-amount-buybox']//span[1]")).getText();
     await driver.wait(until.elementLocated(By.className('a-dropdown-container'))).click();
     driver.wait(until.elementLocated(By.id("dropdown1_10"))).click();
     let input = await driver.findElement(By.xpath("//input[contains(@class,'a-input-text a-width-small')]"))
@@ -89,7 +90,6 @@ async function getOffer(ASIN, offerNum) {
       var sellerqty = "This seller has 999+ available."
     }
     await driver.sleep(1000)
-    let price = await driver.findElement(By.xpath("(//span[contains(@class,'a-size-medium a-color-price')])[2]")).getText();
     console.log("----------------------------------")
     console.log(`Sold by: ${storename}`)
     console.log(`Price: ${price}`)

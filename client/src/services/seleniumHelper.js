@@ -29,7 +29,6 @@ export const getVitals = async (ASIN, user_id) => {
     buy_boxes: null,
     offers: null,
   }
-  console.log(productData)
   await Axios.post('http://localhost:3002/products', productData)
   return productData
 }
@@ -57,6 +56,6 @@ export const getOffer = async (ASIN, offerNum) => {
     condition: resp.data.condition,
     available: resp.data.sellerqty
   }
-  await Axios.post('http://localhost:3002/analytics', productData)
-  return productData
+  let rbm = await Axios.post('http://localhost:3002/analytics', productData)
+  return rbm.data
 }

@@ -5,9 +5,10 @@ import Landing from './components/landing'
 import Login from './components/login'
 import Register from './components/register'
 import Dashboard from './components/dashboard'
+import Footer from './components/footer'
 import { Route, withRouter } from 'react-router-dom'
 import { loginUser, registerUser, verifyUser, getProducts } from './services/apiHelper'
-import { getBuyBox } from './services/seleniumHelper'
+import { getBuyBox, getOffer } from './services/seleniumHelper'
 
 
 class App extends React.Component {
@@ -109,6 +110,12 @@ class App extends React.Component {
     const buyBoxReq = await getBuyBox(productToUpdate[0].asin)
     productToUpdate[0].buy_boxes.push(buyBoxReq)
 
+    const offerReq1 = await getOffer(productToUpdate[0].asin, 1)
+    productToUpdate[0].analytics.push(offerReq1)
+
+    const offerReq2 = await getOffer(productToUpdate[0].asin, 2)
+    productToUpdate[0].analytics.push(offerReq2)
+
     currentProducts = [...productToUpdate, ...currentProducts]
 
     this.setState({ currentProducts, refreshing: false })
@@ -139,8 +146,7 @@ class App extends React.Component {
           <Dashboard currentUser={this.state.currentUser} currentProducts={this.state.currentProducts} handleRefresh={this.handleRefresh} refreshing={this.state.refreshing} />
         )} />
 
-
-
+        <Footer />
       </div >
     );
   }

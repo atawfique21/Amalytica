@@ -15,9 +15,10 @@ header {
   flex-direction: row;
   justify-content: space-between;
   box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.1);
-  background-color: rgba(0, 0, 0, 0.2);
-  position: fixed;
-  top: 0;
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  background-color: #07070A;
+  /* position: fixed; */
+  /* top: 0; */
   min-width: 100vw;
   min-height: 8vh;
 }
@@ -34,7 +35,7 @@ header > .header-logo > a {
   color: #5867dd;
   text-decoration: none;
   font-size: 30px;
-  font-weight: 500;
+  font-weight: 800;
 }
 
 header > .header-buttons {
@@ -62,7 +63,7 @@ header > .header-buttons > a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 8%;
+  margin-top: 4%;
 }
 
 .Heading > h1 {
@@ -236,7 +237,7 @@ form > h2 {
 
 
 .dashboard {
-  margin-top: 10%;
+  margin-top: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -322,7 +323,7 @@ form > .search-button {
 .single-data {
   background-color: whitesmoke;
   color: #5867dd;
-  border-radius: 2%;
+  /* border-radius: 2%; */
   padding: 1%;
   max-width: 28%;
   text-align: center;
@@ -361,6 +362,13 @@ form > .search-button {
   max-width: 100%;
 }
 
+.single-data > .chart-wrapper {
+  box-shadow: inset 0 0.1em 1em 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 1%;
+  margin: 10px;
+}
+
 .single-data > .single-buy-box {
   box-shadow: inset 0 0.1em 1em 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -388,12 +396,23 @@ form > .search-button {
   margin-bottom: 8px;
 }
 
+.single-data > .chart-wrapper > h6 {
+  margin-top: -4.5%;
+}
+
 .single-data > h6 {
   margin-top: -4.5%;
 }
 
 .single-data > .need-more {
   max-height: 190px;
+}
+
+.single-data > .refresh {
+  width: auto;
+  height: 40px;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .loader {
@@ -477,4 +496,26 @@ form > .search-button {
   100% {
       height: 75%;
   }
+}
+
+footer {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+  width: 100vw;
+}
+
+footer > h4 {
+  margin-bottom: -20px;
+  background-color: purple;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+footer > h6 {
+  background-color: purple;
+  border-radius: 5px;
+  padding: 4px;
 }

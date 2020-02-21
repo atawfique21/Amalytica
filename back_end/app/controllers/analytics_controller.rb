@@ -27,7 +27,8 @@ class AnalyticsController < ApplicationController
           :seller,
           :condition,
           :available,
-          :price
+          :price,
+          :created_at
       )
     end
 
