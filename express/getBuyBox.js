@@ -18,9 +18,9 @@ async function getBuyBox(ASIN) {
     try {
       var buyboxseller = await driver.findElement(By.id("merchant-info")).getText();
     } catch (e) {
-      var seller = await driver.findElement(By.xpath("//p[@class='a-spacing-none']")).getText();
-      var shipment = await driver.findElement(By.xpath("//p[@class='a-spacing-small']")).getText();
-      var buyboxseller = `${seller}, ${shipment}`
+      var buyboxseller = await driver.findElement(By.xpath("//div[@class='a-section a-spacing-medium']//span[1]")).getText();
+      // var shipment = await driver.findElement(By.xpath("//p[@class='a-spacing-small']")).getText();
+      // var buyboxseller = `${seller}, ${shipment}`
     }
     await driver.wait(until.elementLocated(By.id('add-to-cart-button'))).click();
     await driver.sleep(2000)
@@ -37,11 +37,18 @@ async function getBuyBox(ASIN) {
           await driver.wait(until.elementLocated(By.xpath("(//input[@class='a-button-input'])[1]"))).click();
           return false;
         });
+        await driver.sleep(2000)
+
+        await driver.wait(until.elementLocated(By.className('a-dropdown-container')));
+
         await driver.sleep(1000)
 
-        await driver.wait(until.elementLocated(By.className('a-dropdown-container'))).click();
+        await driver.findElement(By.className('a-dropdown-container')).click();
+
+        await driver.sleep(1000)
 
         driver.wait(until.elementLocated(By.id("dropdown1_10"))).click();
+        await driver.sleep(1000)
         let input = await driver.findElement(By.xpath("//input[contains(@class,'a-input-text a-width-small')]"))
         await driver.sleep(500)
         input.sendKeys(Key.BACK_SPACE)
