@@ -1,5 +1,7 @@
 # Amalytica
 <br>
+Note: This project is out of date, primarily the Selenium poritions. This project should only be used as educational purposes, and not be distrubuted or sold as a product.
+<br>
 Selenium based full-stack application that fetches vital data of Amazon ASINs.
 <br>
 
